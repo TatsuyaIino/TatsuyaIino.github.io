@@ -4408,7 +4408,7 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
       <ul class="rules">
         <li><span>⚽</span><span>ピッチャーは<b>足でキック</b>。<b>サッカーボール</b>か<b>野球ボール</b>を選ぶ</span></li>
         <li><span>🏏</span><span><b>野球ボールはバット</b>、<b>サッカーボールはキック</b>じゃないと飛ばない</span></li>
-        <li><span>💥</span><span><b>必殺技</b>あり。仁王立ち・背負い投げ・大根・穴掘り・お辞儀・おっぱいボール…（1イニングでそれぞれ3回）</span></li>
+        <li><span>💥</span><span><b>必殺技</b>あり。仁王立ち・背負い投げ・大根・穴掘り・お辞儀・おっぱいボール…（1イニングでそれぞれ1回）</span></li>
         <li><span>🍆</span><span>最強の必殺技<b>「ちんちん」</b>は1イニング1回。守備が全員泡を吹いて倒れる</span></li>
         <li><span>🚑</span><span>ランナーにボールを<b>ぶつけてもアウト</b>。当たったら救急車</span></li>
         <li><span>👊</span><span>ランナーはピッチャーを<b>殴りに行ってもいい</b></span></li>
@@ -4594,7 +4594,7 @@ const FORM0=[[17,23],[9,33],[-9,33],[-17,23],[-40,54],[0,70],[40,54]];
 const PITCH={fast:{v:26,bend:0,arc:0.25,name:'速球'},curve:{v:19,bend:1.35,arc:0.55,name:'カーブ'},loop:{v:13,bend:0,arc:2.6,name:'ループ'}};
 const SPB={nio:['仁王立ち','ホームの上に仁王立ち → デッドボール'],seoi:['背負い投げ','審判を背負い投げしてボールに当てる'],head:['ヘディング','頭でボールを打つ'],daikon:['大根','バットを折る→にんじんを食べる→大根で打つ'],eat:['ベース食べ','ホームベースを食べる → 全部ボール'],chinge:['ちんげカッター','ちん毛を大量に抜いてボールを止め、最後はアレで打つ'],chin:['ちんちん','【最強】守備が全員泡を吹いて倒れ、全員ホームイン（1イニング1回）']};
 const SPP={hole:['穴掘り','穴を掘ってバッターの目の前から投げる'],face:['顔投げ','自分の顔を投げる'],bird:['鳥','空を飛んで鳥をつかまえて投げる'],shot:['砲丸投げ','プレートを外してぐるぐる回って投げる'],bow:['お辞儀','審判に頭を下げてストライクにしてもらう'],oppai:['おっぱいボール','バッターが鼻血を出して固まる → 振れずにストライク']};
-const newSP=()=>({bat:{nio:3,seoi:3,head:3,daikon:3,eat:3,chinge:3,chin:1},pit:{hole:3,face:3,bird:3,shot:3,bow:3,oppai:3}});
+const newSP=()=>({bat:{nio:1,seoi:1,head:1,daikon:1,eat:1,chinge:1,chin:1},pit:{hole:1,face:1,bird:1,shot:1,bow:1,oppai:1}});
 const VOICE={nio:'仁王立ち！さあ来い！',seoi:'背負い投げぇぇ！',head:'ヘディングで打つ！',daikon:'大根でいくぞ！',eat:'いただきます！',chinge:'ちんげカッター！',chin:'ちんちん！',hole:'穴掘りピッチング！',face:'顔、投げます！',bird:'鳥をつかまえて投げる！',shot:'砲丸投げぇぇ！',bow:'ストライクにしてください！',oppai:'おっぱいボール！',punch:'オラァ！殴りに行くぞ！',bean:'くらえ！'};
 const sayFx=t=>fx('sayit',t);
 let S=null;
@@ -5154,7 +5154,7 @@ function openSheet(kind){
   const L=$('spList');L.textContent='';
   const team=kind==='bat'?batTeam():fldTeam();
   const defs=kind==='bat'?SPB:SPP,cnt=S.sp[team][kind==='bat'?'bat':'pit'];
-  $('spTitle').textContent=(kind==='bat'?'バッターの必殺技':'ピッチャーの必殺技')+'（1イニングでそれぞれ3回）… あと'+SHEET_LIM+'秒';
+  $('spTitle').textContent=(kind==='bat'?'バッターの必殺技':'ピッチャーの必殺技')+'（1イニングでそれぞれ1回）… あと'+SHEET_LIM+'秒';
   for(const id of Object.keys(defs)){
     const b=document.createElement('button');b.className='spitem'+(id==='chin'?' ult':'');
     const l=document.createElement('span');const nm=document.createElement('b');nm.textContent=defs[id][0];const ds=document.createElement('small');ds.textContent=defs[id][1];l.append(nm,ds);
@@ -5167,7 +5167,7 @@ function openSheet(kind){
   $('spSheet').hidden=false;
 }
 function closeSheet(){const was=sheetFor;$('spSheet').hidden=true;sheetFor=null;if(was==='bat'&&S&&S.choosing&&S.phase==='ready'&&localCtl(batTeam()))setChoosing(false);}
-function sheetTick(dt){if(!sheetFor)return;sheetT=(performance.now()-sheetStart)/1000;const rem=Math.ceil(SHEET_LIM-sheetT);$('spTitle').textContent=(sheetFor==='bat'?'バッターの必殺技':'ピッチャーの必殺技')+'（1イニングでそれぞれ3回）… あと'+Math.max(0,rem)+'秒';if(sheetT>=SHEET_LIM)closeSheet();}
+function sheetTick(dt){if(!sheetFor)return;sheetT=(performance.now()-sheetStart)/1000;const rem=Math.ceil(SHEET_LIM-sheetT);$('spTitle').textContent=(sheetFor==='bat'?'バッターの必殺技':'ピッチャーの必殺技')+'（1イニングでそれぞれ1回）… あと'+Math.max(0,rem)+'秒';if(sheetT>=SHEET_LIM)closeSheet();}
 $('spClose').onclick=closeSheet;
 $('spSheet').addEventListener('click',e=>{if(e.target===$('spSheet'))closeSheet();});
 function useSpecial(kind,id){
